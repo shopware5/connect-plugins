@@ -3,30 +3,22 @@
 namespace SwagConnectAttributeExample\Subscriber;
 
 use Enlight\Event\SubscriberInterface;
+use Shopware\Components\Logger;
 use Shopware\Connect\Struct\Product;
-use SwagConnectAttributeExample\Components\CustomAttributeReader;
-use SwagConnectAttributeExample\Components\CustomAttributeWriter;
 
 class CustomAttributeSubscriber implements SubscriberInterface
 {
     /**
-     * @var CustomAttributeWriter
+     * @var Logger
      */
-    private $writer;
+    private $logger;
 
     /**
-     * @var CustomAttributeReader
+     * @param Logger $logger
      */
-    private $reader;
-
-    /**
-     * @param CustomAttributeWriter $writer
-     * @param CustomAttributeReader $reader
-     */
-    public function __construct(CustomAttributeWriter $writer, CustomAttributeReader $reader)
+    public function __construct(Logger $logger)
     {
-        $this->writer = $writer;
-        $this->reader = $reader;
+        $this->logger = $logger;
     }
 
     /**
@@ -49,19 +41,30 @@ class CustomAttributeSubscriber implements SubscriberInterface
         /** @var Product $product */
         $product = $args->getReturn();
 
-        //Implement your own logic to process custom attributes from connect
-        return $this->reader->read($product);
+        //Receive product from connect and implement your own logic
+        if ($product->customAttribute === 'My custom attribute') {
+            $this->logger->addNotice(
+                'READ ' . $product->title . ' with custom attribute ' . $product->customAttribute
+            );
+        }
+
+        return $product;
     }
 
     /**
+     * Write into the custom attribute before it will be synced to the connect platform
+     *
      * @param \Enlight_Event_EventArgs $args
+     * @return Product
      */
     public function addCustomAttributeData(\Enlight_Event_EventArgs $args)
     {
         /** @var Product $product */
         $product = $args->get('product');
 
-        //Implement your own logic to add custom attributes
-        $this->writer->write($product);
+        $this->logger->addNotice('WRITE ' . $product->title);
+
+        $product->customAttribute = 'My custom attribute';
+        return $product;
     }
 }
