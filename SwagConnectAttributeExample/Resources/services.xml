@@ -10,7 +10,7 @@
             <tag name="shopware.event_subscriber"/>
         </service>
 
-        <service class="SwagConnectAttributeExample\OrderAttributes\OrderSubscriber">
+        <service class="SwagConnectAttributeExample\OrderAttributes\OrderAttributeSubscriber">
             <argument type="service" id="pluginlogger" />
             <tag name="shopware.event_subscriber"/>
         </service>

@@ -6,7 +6,7 @@ use Enlight\Event\SubscriberInterface;
 use Shopware\Components\Logger;
 use Shopware\Connect\Struct\Order;
 
-class OrderSubscriber implements SubscriberInterface
+class OrderAttributeSubscriber implements SubscriberInterface
 {
     /**
      * @var Logger
@@ -27,8 +27,8 @@ class OrderSubscriber implements SubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            'Shopware_Connect_Order_Checkout_Order' => 'event',
-            'Shopware_Connect_Order_ProductFromShop_Buy' => 'buy_order'
+            'Connect_Subscriber_OrderReservation_OrderFilter' => 'addOrderAttributes',
+            'Connect_Components_ProductFromShop_Buy_OrderFilter' => 'readOrderAttributes'
         ];
     }
 
@@ -36,13 +36,13 @@ class OrderSubscriber implements SubscriberInterface
      * @param \Enlight_Event_EventArgs $args
      * @return Order
      */
-    public function buy_order(\Enlight_Event_EventArgs $args)
+    public function readOrderAttributes(\Enlight_Event_EventArgs $args)
     {
         /** @var Order $order */
         $order = $args->getReturn();
 
         /** Process your order */
-        $this->logger->addNotice('Order with customAttribute ' . $order->customAttribute);
+        $this->logger->addNotice('READ order with customAttribute ' . $order->customAttribute);
 
         return $order;
     }
@@ -51,10 +51,13 @@ class OrderSubscriber implements SubscriberInterface
      * @param \Enlight_Event_EventArgs $args
      * @return Order
      */
-    public function event(\Enlight_Event_EventArgs $args)
+    public function addOrderAttributes(\Enlight_Event_EventArgs $args)
     {
         /** @var Order $order */
         $order = $args->getReturn();
+
+        $this->logger->addNotice('WRITE order with localOrderId ' . $order->localOrderId);
+
         $order->customAttribute = 'test';
         return $order;
     }
