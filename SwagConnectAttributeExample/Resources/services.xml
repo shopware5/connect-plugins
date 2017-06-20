@@ -5,18 +5,13 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-
-        <service id="swag_connect_attribute_example.components.custom_attribute_writer" class="SwagConnectAttributeExample\Components\CustomAttributeWriter">
+        <service class="SwagConnectAttributeExample\ProductAttributes\ProductAttributeSubscriber">
             <argument type="service" id="pluginlogger"/>
+            <tag name="shopware.event_subscriber"/>
         </service>
 
-        <service id="swag_connect_attribute_example.components.custom_attribute_reader" class="SwagConnectAttributeExample\Components\CustomAttributeReader">
-            <argument type="service" id="pluginlogger"/>
-        </service>
-
-        <service class="SwagConnectAttributeExample\Subscriber\CustomAttributeSubscriber">
-            <argument type="service" id="swag_connect_attribute_example.components.custom_attribute_writer"/>
-            <argument type="service" id="swag_connect_attribute_example.components.custom_attribute_reader"/>
+        <service class="SwagConnectAttributeExample\OrderAttributes\OrderAttributeSubscriber">
+            <argument type="service" id="pluginlogger" />
             <tag name="shopware.event_subscriber"/>
         </service>
     </services>
