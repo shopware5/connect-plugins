@@ -5,7 +5,7 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service class="SwagConnectAttributeExample\Subscriber\CustomAttributeSubscriber">
+        <service class="SwagConnectAttributeExample\ProductAttributes\ProductAttributeSubscriber">
             <argument type="service" id="pluginlogger"/>
             <tag name="shopware.event_subscriber"/>
         </service>

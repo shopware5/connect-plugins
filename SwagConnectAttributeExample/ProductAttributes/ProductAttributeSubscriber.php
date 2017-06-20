@@ -1,12 +1,12 @@
 <?php
 
-namespace SwagConnectAttributeExample\Subscriber;
+namespace SwagConnectAttributeExample\ProductAttributes;
 
 use Enlight\Event\SubscriberInterface;
 use Shopware\Components\Logger;
 use Shopware\Connect\Struct\Product;
 
-class CustomAttributeSubscriber implements SubscriberInterface
+class ProductAttributeSubscriber implements SubscriberInterface
 {
     /**
      * @var Logger
@@ -44,7 +44,7 @@ class CustomAttributeSubscriber implements SubscriberInterface
         //Receive product from connect and implement your own logic
         if ($product->customAttribute === 'My custom attribute') {
             $this->logger->addNotice(
-                'READ ' . $product->title . ' with custom attribute ' . $product->customAttribute
+                'READ PRODUCT: ' . $product->title . ' with custom attribute ' . $product->customAttribute
             );
         }
 
@@ -62,7 +62,7 @@ class CustomAttributeSubscriber implements SubscriberInterface
         /** @var Product $product */
         $product = $args->get('product');
 
-        $this->logger->addNotice('WRITE ' . $product->title);
+        $this->logger->addNotice('WRITE PRODUCT: ' . $product->title);
 
         $product->customAttribute = 'My custom attribute';
         return $product;

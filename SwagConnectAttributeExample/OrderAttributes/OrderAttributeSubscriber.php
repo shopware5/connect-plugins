@@ -42,7 +42,7 @@ class OrderAttributeSubscriber implements SubscriberInterface
         $order = $args->getReturn();
 
         /** Process your order */
-        $this->logger->addNotice('READ order with customAttribute ' . $order->customAttribute);
+        $this->logger->addNotice('READ ORDER: with customAttribute ' . $order->customAttribute);
 
         return $order;
     }
@@ -56,9 +56,9 @@ class OrderAttributeSubscriber implements SubscriberInterface
         /** @var Order $order */
         $order = $args->getReturn();
 
-        $this->logger->addNotice('WRITE order with localOrderId ' . $order->localOrderId);
-
         $order->customAttribute = 'test';
+        $this->logger->addNotice('WRITE ORDER: with customAttribute ' . $order->customAttribute);
+
         return $order;
     }
 }
